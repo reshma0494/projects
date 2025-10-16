@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { assets } from '../assets/assets';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ const Navbar = () => {
     { id: 3, name: 'About', path: '/about' },
     { id: 4, name: 'Contact', path: '/contact' },
   ];
+  const [visible, setVisible] = useState(false);
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       <img src={assets.logo} className="w-36" alt="logo image" />
@@ -56,7 +57,44 @@ const Navbar = () => {
             100
           </p>
         </Link>
+        <img
+          onClick={() => setVisible(true)}
+          src={assets.menu_icon}
+          alt="menu-icon"
+          className="cursor-pointer w-5 sm:hidden"
+        ></img>
       </div>
+      {visible && (
+        <div
+          className={`absolute right-0 top-0 bottom-0 bg-white overflow-hidden flex flex-col p-4 transition-all ${
+            visible ? 'w-full' : 'w-0'
+          }`}
+        >
+          <div
+            className="flex items-center cursor-pointer py-2"
+            onClick={() => setVisible(false)}
+          >
+            <img
+              src={assets.dropdown_icon}
+              alt="dropdown-icon"
+              className="h-3 rotate-180"
+            />
+            <p className="px-2">Back</p>
+          </div>
+          {listItems.map((listItem) => {
+            return (
+              <NavLink
+                key={listItem.id}
+                to={listItem.path}
+                className="gap-1 p-2"
+                onClick={() => setVisible(false)}
+              >
+                <p>{listItem.name.toUpperCase()}</p>
+              </NavLink>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
